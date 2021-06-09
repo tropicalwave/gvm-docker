@@ -1,0 +1,23 @@
+[Unit]
+Description=Job that runs the ospd-openvas daemon
+Documentation=man:gvm
+After=network.target redis-server@openvas.service prepare-gvm.service
+Wants=redis-server@openvas.service
+
+[Service]
+Environment=PATH=/opt/gvm/bin/ospd-scanner/bin:/opt/gvm/bin:/opt/gvm/sbin:/opt/gvm/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+Type=forking
+User=gvm
+Group=gvm
+WorkingDirectory=/opt/gvm
+PIDFile=/opt/gvm/var/run/ospd-openvas.pid
+ExecStart=/opt/gvm/libexec/start-ospd-openvas
+Restart=on-failure
+RestartSec=2min
+KillMode=process
+KillSignal=SIGINT
+GuessMainPID=no
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

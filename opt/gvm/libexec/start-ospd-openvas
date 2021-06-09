@@ -1,0 +1,4 @@
+#!/bin/bash
+DEFAULT_PARAMETERS=(--pid-file /opt/gvm/var/run/ospd-openvas.pid --unix-socket /opt/gvm/var/run/ospd.sock --log-file /opt/gvm/var/log/gvm/ospd-scanner.log --lock-file-dir /opt/gvm/var/run/ospd/)
+
+/opt/gvm/bin/ospd-scanner/bin/python /opt/gvm/bin/ospd-scanner/bin/ospd-openvas "${DEFAULT_PARAMETERS[@]}"

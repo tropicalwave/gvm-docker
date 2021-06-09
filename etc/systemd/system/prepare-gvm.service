@@ -1,0 +1,11 @@
+[Unit]
+Description=prepare-gvm
+Requires=redis-server@openvas.service postgresql.service
+After=redis-server@openvas.service postgresql.service
+
+[Service]
+ExecStart=/opt/gvm/libexec/prepare-gvm.sh
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target

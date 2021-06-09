@@ -1,0 +1,7 @@
+[Unit]
+Description=Synchronize GVM feeds
+After=network.target prepare-gvm.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/gvm/sbin/feedsync.sh

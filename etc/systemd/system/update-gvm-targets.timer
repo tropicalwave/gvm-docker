@@ -1,0 +1,8 @@
+[Unit]
+Description=Synchronize GVM feeds
+
+[Timer]
+OnCalendar=*-*-* 17:00:00
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,9 @@
+[Unit]
+Description=Synchronize GVM feeds
+
+[Timer]
+OnCalendar=*-*-* 12:00:00
+RandomizedDelaySec=7200
+
+[Install]
+WantedBy=multi-user.target
