@@ -1,3 +1,5 @@
+![shellcheck workflow](https://github.com/tropicalwave/gvm-docker/actions/workflows/shellcheck.yml/badge.svg)
+
 # Deployment for Greenbone Vulnerability Management
 
 This deployment sets up a GVM installation in a container.
