@@ -1,4 +1,4 @@
-![shellcheck workflow](https://github.com/tropicalwave/gvm-docker/actions/workflows/shellcheck.yml/badge.svg)
+[![GitHub Super-Linter](https://github.com/tropicalwave/gvm-docker/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
 
 # Deployment for Greenbone Vulnerability Management
 
