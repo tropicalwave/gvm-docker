@@ -1,11 +1,12 @@
-[![GitHub Super-Linter](https://github.com/tropicalwave/gvm-docker/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
-
 # Deployment for Greenbone Vulnerability Management
+
+[![GitHub Super-Linter](https://github.com/tropicalwave/gvm-docker/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
 
 This deployment sets up a GVM installation in a container.
 
 After it is set up, the system will
-* be accessible by browsing to https://localhost:4443,
+
+* be accessible by browsing to <https://localhost:4443>,
 * update GVM feeds daily between noon and 2 PM UTC, and
 * update the underlying Debian installation daily.
 
@@ -27,7 +28,8 @@ podman-compose up -d
 
 ## Login
 
-Browse to https://localhost:4443
+Browse to <https://localhost:4443>
+
 * user: gvm
 * password: (see content of `.gvm_pass`)
 
