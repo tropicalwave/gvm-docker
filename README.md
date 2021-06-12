@@ -1,8 +1,11 @@
-# Deployment for Greenbone Vulnerability Management
+# gvm-docker
 
 [![GitHub Super-Linter](https://github.com/tropicalwave/gvm-docker/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
 
-This deployment sets up a GVM installation in a container.
+## Introduction
+
+This deployment sets up a GVM (Greenbone Vulnerability Management)
+installation in a container.
 
 After it is set up, the system will
 
