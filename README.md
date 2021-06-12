@@ -21,7 +21,7 @@ network, this service is heavily overloaded and scans are slowed down.
 
 ## Quickstart
 
-```
+```bash
 ./prepare.sh
 podman-compose up -d
 ```
@@ -43,7 +43,7 @@ To speed up startups of the system at a later point by decreasing the
 time for the initial feed sync, the file `feeds.tar.gz` can be retrieved
 from a running system.
 
-```
+```bash
 podman exec -ti gvm_openvas_1 /bin/bash
 # cd /opt/gvm
 # tar -czf /root/feeds.tar.gz var/lib/gvm/cert-data/ var/lib/gvm/scap-data/ var/lib/openvas/plugins/ var/lib/gvm/data-objects/gvmd/
