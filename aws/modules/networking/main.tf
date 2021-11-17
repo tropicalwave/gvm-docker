@@ -10,6 +10,7 @@ module "vpc" {
   cidr           = "10.0.0.0/16"
   azs            = data.aws_availability_zones.available.names
   public_subnets = ["10.0.0.0/24"]
+  version        = ">= 2.0.0"
 }
 
 resource "aws_security_group" "allow_ssh_pub" {
