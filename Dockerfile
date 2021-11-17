@@ -1,9 +1,10 @@
 FROM debian:10
-RUN apt-get -y update && \
-    apt-get -y dist-upgrade && \
+RUN apt-key adv --fetch-keys https://dl.yarnpkg.com/debian/pubkey.gpg && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" > \
+    /etc/apt/sources.list.d/yarn.list && \
+    apt-get -y update && \
     apt-get -y autoremove && \
-    apt-get install -y texlive-latex-extra --no-install-recommends && \
-    apt-get install -y \
+    apt-get install -y --no-install-recommends \
     bison \
     cmake \
     curl \
@@ -55,6 +56,7 @@ RUN apt-get -y update && \
     sshpass \
     sudo \
     texlive-fonts-recommended \
+    texlive-latex-extra \
     uuid-dev \
     vim \
     virtualenv \
@@ -62,12 +64,9 @@ RUN apt-get -y update && \
     xml-twig-tools \
     xmlstarlet \
     xmltoman \
-    xsltproc
-RUN apt-key adv --fetch-keys https://dl.yarnpkg.com/debian/pubkey.gpg && \
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" > \
-    /etc/apt/sources.list.d/yarn.list && \
-    apt-get -y update && \
-    apt-get -y install yarn
+    xsltproc \
+    yarn && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY etc/profile.d/* /etc/profile.d/
 COPY etc/ld.so.conf.d/gvm.conf /etc/ld.so.conf.d/

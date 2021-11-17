@@ -1,2 +1,6 @@
 feeds.tar.gz
 .gvm_pass
+aws/.terraform*
+aws/terraform.tfstate*
+aws/GVM-key.pem
+aws/head.tar.gz
