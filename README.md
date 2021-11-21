@@ -48,7 +48,6 @@ from a running system.
 
 ```bash
 podman exec -ti gvm_openvas_1 /bin/bash
-# cd /opt/gvm
 # tar -czf /root/feeds.tar.gz var/lib/gvm/cert-data/ var/lib/gvm/scap-data/ var/lib/openvas/plugins/ var/lib/gvm/data-objects/gvmd/
 # exit
 podman cp gvm_openvas_1:/root/feeds.tar.gz .

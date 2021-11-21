@@ -7,9 +7,9 @@ Wants=gvmd.service
 
 [Service]
 Type=forking
-PIDFile=/opt/gvm/var/run/gsad.pid
+PIDFile=/run/gvm/gsad.pid
 WorkingDirectory=/opt/gvm
-ExecStart=/opt/gvm/sbin/gsad --drop-privileges=gvm
+ExecStart=/opt/gvm/sbin/gsad --drop-privileges=gvm -k /var/lib/gvm/private/CA/serverkey.pem -c /var/lib/gvm/CA/servercert.pem
 Restart=on-failure
 RestartSec=2min
 KillMode=process

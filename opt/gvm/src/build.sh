@@ -5,9 +5,12 @@ export PKG_CONFIG_PATH=/opt/gvm/lib/pkgconfig:$PKG_CONFIG_PATH
 mkdir -p /opt/gvm/src
 cd /opt/gvm/src
 
-VERSION=v21.4.0
+VERSION=v21.4.3
 for product in gvm-libs openvas gvmd gsa ospd-openvas ospd; do
     TAG="$VERSION"
+    if [ "$product" == "gvmd" ]; then
+        TAG="v21.4.4"
+    fi
 
     git clone -b "$TAG" --depth 1 \
 	"https://github.com/greenbone/$product.git"
@@ -43,7 +46,7 @@ cd /opt/gvm/src
 rm -rf gvm-tools
 
 # openvas-smb
-git clone -b master --depth 1 \
+git clone --depth 1 \
     https://github.com/greenbone/openvas-smb.git
 mkdir openvas-smb/build
 cd openvas-smb/build
@@ -57,7 +60,7 @@ rm -rf openvas-smb
 virtualenv --python python3.7  /opt/gvm/bin/ospd-scanner/
 # shellcheck disable=SC1091
 source /opt/gvm/bin/ospd-scanner/bin/activate
-mkdir -p /opt/gvm/var/run/ospd/
+mkdir -p /run/gvm/
 cd ospd
 pip3 install .
 cd /opt/gvm/src
@@ -65,4 +68,5 @@ cd ospd-openvas
 pip3 install .
 deactivate
 
-mkdir -p /opt/gvm/var/log
+mkdir -p /var/log/gvm
+chown gvm:gvm /var/log/gvm

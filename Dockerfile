@@ -1,11 +1,14 @@
 FROM debian:10
-RUN apt-key adv --fetch-keys https://dl.yarnpkg.com/debian/pubkey.gpg && \
+RUN apt-get -y update && \
+    apt-get install -y --no-install-recommends gnupg ca-certificates && \
+    apt-key adv --fetch-keys https://dl.yarnpkg.com/debian/pubkey.gpg && \
     echo "deb https://dl.yarnpkg.com/debian/ stable main" > \
     /etc/apt/sources.list.d/yarn.list && \
     apt-get -y update && \
     apt-get -y autoremove && \
     apt-get install -y --no-install-recommends \
     bison \
+    build-essential \
     cmake \
     curl \
     dnsutils \
@@ -14,7 +17,6 @@ RUN apt-key adv --fetch-keys https://dl.yarnpkg.com/debian/pubkey.gpg && \
     gcc-mingw-w64 \
     gettext \
     git \
-    gnupg \
     gnutls-bin \
     graphviz \
     heimdal-dev \
@@ -35,12 +37,13 @@ RUN apt-key adv --fetch-keys https://dl.yarnpkg.com/debian/pubkey.gpg && \
     libunistring-dev \
     libxml2-dev \
     nmap \
+    node.js \
     nsis \
     pkg-config \
     postgresql \
     postgresql-contrib \
     postgresql-server-dev-all \
-    python-polib \
+    python3-polib \
     python3-defusedxml \
     python3-lxml \
     python3-paramiko \
@@ -55,6 +58,7 @@ RUN apt-key adv --fetch-keys https://dl.yarnpkg.com/debian/pubkey.gpg && \
     software-properties-common \
     sshpass \
     sudo \
+    systemd \
     texlive-fonts-recommended \
     texlive-latex-extra \
     uuid-dev \
@@ -76,13 +80,12 @@ RUN adduser gvm --disabled-password --home /opt/gvm/ --gecos '' && \
     usermod -aG redis gvm
 
 COPY opt/gvm/src/build.sh /opt/gvm/src/
-RUN chown gvm:gvm /opt/gvm/src/ && \
-    su - gvm -c '/opt/gvm/src/build.sh' && \
+RUN /opt/gvm/src/build.sh && \
     ldconfig
 
 RUN cp /opt/gvm/src/redis-openvas.conf /etc/redis/ && \
     echo "db_address = /run/redis-openvas/redis.sock" > \
-    /opt/gvm/etc/openvas/openvas.conf
+    /etc/openvas/openvas.conf
 
 COPY feeds.tar.gz /opt/gvm/initial_data/
 COPY opt/gvm/libexec/* /opt/gvm/libexec/
@@ -100,4 +103,4 @@ RUN systemctl disable redis-server && \
     systemctl enable ospd-openvas
 
 EXPOSE 443/tcp
-CMD [ "/sbin/init" ]
+CMD [ "/lib/systemd/systemd" ]

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-readonly LOG_FILE="/opt/gvm/var/log/gvm/feedsync.out.log"
+readonly LOG_FILE="/var/log/gvm/feedsync.out.log"
 exec 1>"$LOG_FILE"
 
 su - gvm -c 'greenbone-nvt-sync'
