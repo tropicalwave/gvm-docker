@@ -20,6 +20,7 @@ RUN apt-get -y update && \
     gnutls-bin \
     graphviz \
     heimdal-dev \
+    less \
     libglib2.0-dev \
     libgnutls28-dev \
     libgpgme-dev \
