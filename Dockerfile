@@ -1,4 +1,4 @@
-FROM debian:10
+FROM debian:11
 RUN apt-get -y update && \
     apt-get install -y --no-install-recommends gnupg ca-certificates && \
     apt-key adv --fetch-keys https://dl.yarnpkg.com/debian/pubkey.gpg && \
@@ -87,7 +87,6 @@ RUN cp /opt/gvm/src/redis-openvas.conf /etc/redis/ && \
     echo "db_address = /run/redis-openvas/redis.sock" > \
     /etc/openvas/openvas.conf
 
-COPY feeds.tar.gz /opt/gvm/initial_data/
 COPY opt/gvm/libexec/* /opt/gvm/libexec/
 COPY opt/gvm/sbin/* /opt/gvm/sbin/
 

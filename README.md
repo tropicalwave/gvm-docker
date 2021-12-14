@@ -52,3 +52,14 @@ podman exec -ti gvm_openvas_1 /bin/bash
 # exit
 podman cp gvm_openvas_1:/root/feeds.tar.gz .
 ```
+
+## Skip initial feed synchronization
+
+To skip the - potentially very long running - initial feed synchronization,
+you can execute the below command before starting the container. Please
+be aware that this will only work if `feeds.tar.gz` has been initialized
+properly beforehand.
+
+```bash
+echo NO >.initial_feed_sync
+```

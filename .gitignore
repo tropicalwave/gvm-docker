@@ -1,5 +1,6 @@
 feeds.tar.gz
 .gvm_pass
+.initial_feed_sync
 aws/.terraform*
 aws/terraform.tfstate*
 aws/GVM-key.pem

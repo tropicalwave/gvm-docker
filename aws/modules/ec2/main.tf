@@ -85,6 +85,7 @@ resource "aws_instance" "ec2_public" {
       "cp /tmp/feeds.tar.gz .",
       "mkdir -p slaves/ logs/",
       "mv /tmp/.gvm_pass .",
+      "touch .initial_feed_sync",
       "sudo podman-compose -f docker-compose.yml up -d"]
 
     connection {

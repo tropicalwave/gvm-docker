@@ -21,7 +21,9 @@ tar xf /opt/gvm/initial_data/feeds.tar.gz -C /
 INITIAL_PW="$(cat /run/secrets/gvm_pass)"
 
 # Reload NVTs
-su - gvm -c "greenbone-nvt-sync >$LOG_FILE"
+if ! grep -q NO /opt/gvm/initial_data/initial_feed_sync; then
+    su - gvm -c "greenbone-nvt-sync >$LOG_FILE"
+fi
 sudo openvas -u
 
 # Set-up PostgreSQL
@@ -51,9 +53,11 @@ socketpath=/run/gvm/gvmd.sock
 EOF
 "
 
-su - gvm -c "greenbone-feed-sync --type GVMD_DATA >> $LOG_FILE"
-su - gvm -c "greenbone-feed-sync --type SCAP >> $LOG_FILE"
-su - gvm -c "greenbone-feed-sync --type CERT >> $LOG_FILE"
+if ! grep -q NO /opt/gvm/initial_data/initial_feed_sync; then
+    su - gvm -c "greenbone-feed-sync --type GVMD_DATA >> $LOG_FILE"
+    su - gvm -c "greenbone-feed-sync --type SCAP >> $LOG_FILE"
+    su - gvm -c "greenbone-feed-sync --type CERT >> $LOG_FILE"
+fi
 
 # Necessary for remote scanners as ospd-openvas searches
 # for certificates and keys under /usr/var

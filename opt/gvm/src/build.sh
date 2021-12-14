@@ -23,7 +23,7 @@ for product in gvm-libs openvas gvmd gsa ospd-openvas ospd; do
 
     mkdir "$product/build"
     cd "$product/build"
-    cmake -DCMAKE_INSTALL_PREFIX=/opt/gvm ..
+    cmake -DCMAKE_INSTALL_PREFIX=/opt/gvm -DPostgreSQL_TYPE_INCLUDE_DIR=/usr/include/postgresql ..
     make
     make doc
     make install
@@ -32,9 +32,9 @@ for product in gvm-libs openvas gvmd gsa ospd-openvas ospd; do
 done
 
 # gvm-tools
-git clone -b v21.1.0 --depth 1 \
+git clone -b v21.10.0 --depth 1 \
     https://github.com/greenbone/gvm-tools.git
-virtualenv --python python3.7  /opt/gvm/bin/gvm-tools/
+virtualenv --python python3.9  /opt/gvm/bin/gvm-tools/
 # shellcheck disable=SC1091
 source /opt/gvm/bin/gvm-tools/bin/activate
 cd gvm-tools
@@ -57,7 +57,7 @@ cd /opt/gvm/src
 rm -rf openvas-smb
 
 # ospd and ospd-scanner
-virtualenv --python python3.7  /opt/gvm/bin/ospd-scanner/
+virtualenv --python python3.9  /opt/gvm/bin/ospd-scanner/
 # shellcheck disable=SC1091
 source /opt/gvm/bin/ospd-scanner/bin/activate
 mkdir -p /run/gvm/
