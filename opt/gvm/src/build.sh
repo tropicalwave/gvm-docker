@@ -5,28 +5,38 @@ export PKG_CONFIG_PATH=/opt/gvm/lib/pkgconfig:$PKG_CONFIG_PATH
 mkdir -p /opt/gvm/src
 cd /opt/gvm/src
 
-VERSION=v21.4.3
-for product in gvm-libs openvas gvmd gsa ospd-openvas ospd; do
+VERSION=v21.4.4
+INSTALL_PREFIX=/opt/gvm
+for product in gvm-libs openvas gvmd gsa gsad ospd-openvas; do
     TAG="$VERSION"
     if [ "$product" == "gvmd" ]; then
-        TAG="v21.4.4"
+        TAG="v21.4.5"
     fi
 
     git clone -b "$TAG" --depth 1 \
 	"https://github.com/greenbone/$product.git"
 
-    if echo $product | grep -q ^ospd; then
+    if echo $product | grep -q ospd-openvas; then
         continue
-    elif echo $product | grep -q ^openvas; then
-        cp openvas/config/redis-openvas.conf /opt/gvm/src
+    elif echo $product | grep -q '^gsa$'; then
+        cd "$product"
+        yarn
+        yarn build
+        mkdir -p "$INSTALL_PREFIX/share/gvm/gsad/web/"
+        cp -r build/* "$INSTALL_PREFIX/share/gvm/gsad/web/"
+    else
+        if echo $product | grep -q ^openvas; then
+            cp openvas/config/redis-openvas.conf /opt/gvm/src
+        fi
+
+        mkdir "$product/build"
+        cd "$product/build"
+        cmake -DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX" ..
+        make
+        make doc
+        make install
     fi
 
-    mkdir "$product/build"
-    cd "$product/build"
-    cmake -DCMAKE_INSTALL_PREFIX=/opt/gvm -DPostgreSQL_TYPE_INCLUDE_DIR=/usr/include/postgresql ..
-    make
-    make doc
-    make install
     cd /opt/gvm/src
     rm -rf "$product"
 done
@@ -56,17 +66,16 @@ make install
 cd /opt/gvm/src
 rm -rf openvas-smb
 
-# ospd and ospd-scanner
+# ospd-scanner installation
 virtualenv --python python3.9  /opt/gvm/bin/ospd-scanner/
 # shellcheck disable=SC1091
 source /opt/gvm/bin/ospd-scanner/bin/activate
 mkdir -p /run/gvm/
-cd ospd
-pip3 install .
-cd /opt/gvm/src
 cd ospd-openvas
 pip3 install .
 deactivate
+cd /opt/gvm/src
+rm -rf ospd-scanner
 
 mkdir -p /var/log/gvm
 chown gvm:gvm /var/log/gvm

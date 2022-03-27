@@ -8,7 +8,7 @@ After=postgresql.service ospd-openvas.service prepare-gvm.service
 Type=forking
 User=gvm
 Group=gvm
-PIDFile=/run/gvm/gvmd.pid
+PIDFile=/run/gvmd/gvmd.pid
 WorkingDirectory=/opt/gvm
 ExecStart=/opt/gvm/sbin/gvmd --osp-vt-update=/run/gvm/ospd.sock
 ExecReload=/bin/kill -HUP $MAINPID
