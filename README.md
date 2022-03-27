@@ -47,10 +47,10 @@ time for the initial feed sync, the file `feeds.tar.gz` can be retrieved
 from a running system.
 
 ```bash
-podman exec -ti gvm_openvas_1 /bin/bash
+podman exec -ti gvm-docker_openvas_1 /bin/bash
 # tar -czf /root/feeds.tar.gz var/lib/gvm/cert-data/ var/lib/gvm/scap-data/ var/lib/openvas/plugins/ var/lib/gvm/data-objects/gvmd/
 # exit
-podman cp gvm_openvas_1:/root/feeds.tar.gz .
+podman cp gvm-docker_openvas_1:/root/feeds.tar.gz .
 ```
 
 ## Skip initial feed synchronization
