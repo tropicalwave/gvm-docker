@@ -48,7 +48,7 @@ username=gvm
 password=$INITIAL_PW
 
 [unixsocket]
-socketpath=/run/gvm/gvmd.sock
+socketpath=/run/gvmd/gvmd.sock
 EOF
 "
 
