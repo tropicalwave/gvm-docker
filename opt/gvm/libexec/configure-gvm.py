@@ -27,7 +27,7 @@ if len(scanner_id) == 0:
 while True:
     # the scan config list is empty at startup time
     scan_configs = gmp.get_scan_configs()
-    if len(scan_configs.xpath("config/@id")) == 0:
+    if len(scan_configs.xpath("config/@id")) < 6:
         time.sleep(10)
         continue
 

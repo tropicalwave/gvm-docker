@@ -90,6 +90,7 @@ RUN cp /opt/gvm/src/redis-openvas.conf /etc/redis/ && \
 
 COPY opt/gvm/libexec/* /opt/gvm/libexec/
 COPY opt/gvm/sbin/* /opt/gvm/sbin/
+COPY opt/gvm/etc/* /opt/gvm/etc/
 
 COPY etc/systemd/system/* /etc/systemd/system/
 
