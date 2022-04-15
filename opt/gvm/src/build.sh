@@ -49,9 +49,12 @@ virtualenv --python python3.9  /opt/gvm/bin/gvm-tools/
 source /opt/gvm/bin/gvm-tools/bin/activate
 cd gvm-tools
 pip3 install .
+pip3 install tz icalendar
 deactivate
-ln -s /opt/gvm/bin/gvm-tools/bin/gvm-pyshell /opt/gvm/bin/
-ln -s /opt/gvm/bin/gvm-tools/bin/gvm-cli /opt/gvm/bin/
+for i in gvm-cli gvm-pyshell gvm-script; do
+    ln -s "/opt/gvm/bin/gvm-tools/bin/$i" /opt/gvm/bin/
+done
+
 cd /opt/gvm/src
 rm -rf gvm-tools
 

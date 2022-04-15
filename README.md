@@ -10,6 +10,7 @@ installation in a container.
 After it is set up, the system will
 
 * be accessible by browsing to <https://localhost:4443>,
+* be configured with a weekly running task targeting the container itself,
 * update GVM feeds daily between noon and 2 PM UTC, and
 * update the underlying Debian installation daily.
 
@@ -62,4 +63,20 @@ properly beforehand.
 
 ```bash
 echo NO >.initial_feed_sync
+```
+
+## Issues with cgroups v2
+
+In case of (A) running many scans in parallel and (B) using podman in
+combination with cgroups v2 (which limits the number of container processes
+to 2048 by default), you might need to increase this limit since `fork()`
+syscalls by the scanner could return with the message
+`Resource temporarily unavailable`. Therefore, you need to increase this
+limit in `/etc/containers/containers.conf` (for a system-wide setting) or
+in `$HOME/.config/containers/containers.conf` (for a user-specific setting)
+like this:
+
+```bash
+[containers]
+pids_limit = 10240
 ```

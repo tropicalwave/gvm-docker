@@ -96,6 +96,7 @@ COPY etc/systemd/system/* /etc/systemd/system/
 RUN systemctl disable redis-server && \
     systemctl enable redis-server@openvas && \
     systemctl enable postgresql && \
+    systemctl enable configure-gvm && \
     systemctl enable prepare-gvm && \
     systemctl enable gvmd-feedsync.timer && \
     systemctl enable gvmd && \

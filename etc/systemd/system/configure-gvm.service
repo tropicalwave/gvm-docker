@@ -1,0 +1,13 @@
+[Unit]
+Description=configure gvm
+Requires=gvmd.service
+After=gvmd.service
+
+[Service]
+User=gvm
+Group=gvm
+ExecStart=/opt/gvm/bin/gvm-script socket /opt/gvm/libexec/configure-gvm.py
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target
