@@ -1,3 +1,4 @@
+# flake8: noqa: F821,E501
 # pylint: disable=undefined-variable
 # type: ignore
 
@@ -14,7 +15,7 @@ from icalendar import Calendar, Event
 if Path("/opt/gvm/.configure-gvm-success").exists():
     sys.exit(0)
 
-scanners = gmp.get_scanners()  # noqa: F821
+scanners = gmp.get_scanners()
 scanner_id = ""
 for i, scanner in enumerate(scanners.xpath("scanner")):
     if scanner.xpath("name/text()")[0] == "OpenVAS Default":
