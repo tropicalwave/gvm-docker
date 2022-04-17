@@ -1,4 +1,4 @@
-FROM debian:11
+FROM debian:11 AS base
 RUN apt-get -y update && \
     apt-get install -y --no-install-recommends gnupg ca-certificates && \
     apt-key adv --fetch-keys https://dl.yarnpkg.com/debian/pubkey.gpg && \
@@ -37,6 +37,7 @@ RUN apt-get -y update && \
     libssh-gcrypt-dev \
     libunistring-dev \
     libxml2-dev \
+    openssh-server \
     nmap \
     node.js \
     nsis \
@@ -94,7 +95,12 @@ COPY opt/gvm/etc/* /opt/gvm/etc/
 
 COPY etc/systemd/system/* /etc/systemd/system/
 
+CMD [ "/lib/systemd/systemd" ]
+
+FROM base AS gvm
+EXPOSE 443/tcp
 RUN systemctl disable redis-server && \
+    systemctl disable ssh && \
     systemctl enable redis-server@openvas && \
     systemctl enable postgresql && \
     systemctl enable configure-gvm && \
@@ -104,5 +110,13 @@ RUN systemctl disable redis-server && \
     systemctl enable gsad && \
     systemctl enable ospd-openvas
 
-EXPOSE 443/tcp
-CMD [ "/lib/systemd/systemd" ]
+FROM base AS openvas
+EXPOSE 22/tcp
+RUN sed -i 's/postgresql.service//g' /etc/systemd/system/prepare-gvm.service && \
+    systemctl disable redis-server && \
+    systemctl disable postgresql && \
+    systemctl enable redis-server@openvas && \
+    systemctl enable prepare-gvm && \
+    systemctl enable gvmd-feedsync.timer && \
+    systemctl enable ospd-openvas && \
+    touch /opt/gvm/.is_worker

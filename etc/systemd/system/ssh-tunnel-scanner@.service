@@ -1,0 +1,15 @@
+[Unit]
+Description=Establish SSH tunnel to OpenVAS scanner %I
+After=network.target
+
+[Service]
+User=gvm
+Group=gvm
+EnvironmentFile=/opt/gvm/remote-scanners/%i.env
+ExecStartPre=rm -f "/opt/gvm/remote-scanners/%i.sock"
+ExecStart=/usr/bin/ssh -NT -o ServerAliveInterval=60 -o ExitOnForwardFailure=yes -L "/opt/gvm/remote-scanners/%i.sock:/run/gvm/ospd.sock" -p "${REMOTE_PORT}" "${HOST}"
+RestartSec=5
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

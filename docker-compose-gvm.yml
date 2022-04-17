@@ -1,0 +1,11 @@
+---
+version: "3.4"
+
+services:
+  openvas:
+    build:
+      target: gvm
+    ports:
+      - "127.0.0.1:4443:443"
+    volumes:
+      - ".gvm_pass:/run/secrets/gvm_pass:ro"

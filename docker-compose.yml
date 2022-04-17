@@ -1,15 +1,12 @@
 ---
-version: "3.1"
+version: "3.4"
 
 services:
   openvas:
     build:
       context: .
-    ports:
-      - "127.0.0.1:4443:443"
     security_opt:
       - label=disable
     volumes:
-      - ".gvm_pass:/run/secrets/gvm_pass:ro"
       - "./feeds.tar.gz:/opt/gvm/initial_data/feeds.tar.gz:ro"
       - ".initial_feed_sync:/opt/gvm/initial_data/initial_feed_sync:ro"

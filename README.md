@@ -25,9 +25,10 @@ network, this service is heavily overloaded and scans are slowed down.
 
 ## Quickstart
 
+The following command will start a single master node:
 ```bash
 ./prepare.sh
-podman-compose up -d
+podman-compose -f docker-compose.yml -f docker-compose-gvm.yml up -d --build
 ```
 
 ## Login
@@ -65,7 +66,9 @@ properly beforehand.
 echo NO >.initial_feed_sync
 ```
 
-## Issues with cgroups v2
+## Issues
+
+### cgroups v2
 
 In case of (A) running many scans in parallel and (B) using podman in
 combination with cgroups v2 (which limits the number of container processes
@@ -80,3 +83,10 @@ like this:
 [containers]
 pids_limit = 10240
 ```
+
+### Interrupted scans due to failing host alive detection
+
+If scans interrupt at 0% and you're using rootless podman, this might
+be due to the target using ICMP ping as "Alive Test" for the hosts (which
+is not allowed as a default). In this case, please use a setting like
+"Consider Alive".
