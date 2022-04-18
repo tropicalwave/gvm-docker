@@ -11,9 +11,12 @@ After it is set up, the system will
 
 * be accessible by browsing to <https://localhost:4443>,
 * be configured with a weekly running task targeting the container itself,
+* allow connection to additional scanner containers,
 * update GVM feeds daily between noon and 2 PM UTC, and
 * update the underlying Debian installation daily.
 
+The following diagram shows a rough overview of the components and
+interactions involved:
 ![Architecture](/images/architecture.svg)
 
 ## Quickstart
@@ -24,14 +27,12 @@ The following command will start a single master node:
 podman-compose -f docker-compose.yml -f docker-compose-gvm.yml up -d --build
 ```
 
-## Login
-
-Browse to <https://localhost:4443>
+After some time, you can browse to <https://localhost:4443> and login:
 
 * user: gvm
 * password: (see content of `.gvm_pass`)
 
-The initialization phase takes some minutes (more than 15 minutes).
+Hint: The initialization phase takes some minutes (more than 15 minutes).
 You can check that it finished by checking that one task was created.
 
 ## Connect additional scanner/s
@@ -49,7 +50,7 @@ Thereafter, run the following commands on the host of the master node
 and follow the instructions:
 ```bash
 podman-compose exec openvas /bin/bash
-> /opt/gvm/sbin/add-scanner.sh <some name> <IP address of additional scanner>
+> /opt/gvm/sbin/add-scanner.sh <some name> <IP address of additional scanner> [SSH port]
 ```
 
 The scanner will now be shown at <https://localhost:4443/scanners> and
