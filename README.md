@@ -41,7 +41,7 @@ Browse to <https://localhost:4443>
 The initialization phase takes some minutes (more than 15 minutes).
 You can check that it finished by checking that one task was created.
 
-## Connect additional scanner
+## Connect additional scanner/s
 
 To connect an additional scanner to the master node, checkout the
 repository on another host and run the following commands:
