@@ -39,8 +39,28 @@ Browse to <https://localhost:4443>
 * password: (see content of `.gvm_pass`)
 
 The initialization phase takes some minutes (more than 15 minutes).
-You can check that it finished by looking at the scanner configs and the
-NVTs (their number must be larger than 0).
+You can check that it finished by checking that one task was created.
+
+## Connect additional scanner
+
+To connect an additional scanner to the master node, checkout the
+repository on another host and run the following commands:
+```bash
+podman-compose -f docker-compose.yml -f docker-compose-ospd.yml up -d --build
+
+# Wait until the following command shows that all services are running.
+podman-compose exec openvas systemctl status
+```
+
+Thereafter, run the following commands on the host of the master node
+and follow the instructions:
+```bash
+podman-compose exec openvas /bin/bash
+> /opt/gvm/sbin/add-scanner.sh <some name> <IP address of additional scanner>
+```
+
+The scanner will now be shown at <https://localhost:4443/scanners> and
+can be used within tasks.
 
 ## Retrieve initial feed file from already running system
 
