@@ -14,14 +14,7 @@ After it is set up, the system will
 * update GVM feeds daily between noon and 2 PM UTC, and
 * update the underlying Debian installation daily.
 
-## Rootfull vs. rootless podman
-
-While not strictly necessary, it's highly recommended to NOT use rootless
-podman for running in production.
-
-Background: rootless podman uses slirp4netns to forward network
-traffic from/to a container. This is a single process and with GVM scanning a whole
-network, this service is heavily overloaded and scans are slowed down.
+![Architecture](/images/architecture.svg)
 
 ## Quickstart
 
@@ -62,30 +55,6 @@ podman-compose exec openvas /bin/bash
 The scanner will now be shown at <https://localhost:4443/scanners> and
 can be used within tasks.
 
-## Retrieve initial feed file from already running system
-
-To speed up startups of the system at a later point by decreasing the
-time for the initial feed sync, the file `feeds.tar.gz` can be retrieved
-from a running system.
-
-```bash
-podman exec -ti gvm-docker_openvas_1 /bin/bash
-# tar -czf /root/feeds.tar.gz var/lib/gvm/cert-data/ var/lib/gvm/scap-data/ var/lib/openvas/plugins/ var/lib/gvm/data-objects/gvmd/
-# exit
-podman cp gvm-docker_openvas_1:/root/feeds.tar.gz .
-```
-
-## Skip initial feed synchronization
-
-To skip the - potentially very long running - initial feed synchronization,
-you can execute the below command before starting the container. Please
-be aware that this will only work if `feeds.tar.gz` has been initialized
-properly beforehand.
-
-```bash
-echo NO >.initial_feed_sync
-```
-
 ## Issues
 
 ### cgroups v2
@@ -110,3 +79,36 @@ If scans interrupt at 0% and you're using rootless podman, this might
 be due to the target using ICMP ping as "Alive Test" for the hosts (which
 is not allowed as a default). In this case, please use a setting like
 "Consider Alive".
+
+### Rootless podman
+
+While not strictly necessary, it's highly recommended to NOT use rootless
+podman for running in production.
+
+Background: rootless podman uses slirp4netns to forward network
+traffic from/to a container. This is a single process and with GVM scanning a
+whole network, this service is heavily overloaded and scans are slowed down.
+
+### Retrieve initial feed file from already running system
+
+To speed up startups of the system at a later point by decreasing the
+time for the initial feed sync, the file `feeds.tar.gz` can be retrieved
+from a running system.
+
+```bash
+podman exec -ti gvm-docker_openvas_1 /bin/bash
+# tar -czf /root/feeds.tar.gz var/lib/gvm/cert-data/ var/lib/gvm/scap-data/ var/lib/openvas/plugins/ var/lib/gvm/data-objects/gvmd/
+# exit
+podman cp gvm-docker_openvas_1:/root/feeds.tar.gz .
+```
+
+### Skip initial feed synchronization
+
+To skip the - potentially very long running - initial feed synchronization,
+you can execute the below command before starting the container. Please
+be aware that this will only work if `feeds.tar.gz` has been initialized
+properly beforehand.
+
+```bash
+echo NO >.initial_feed_sync
+```
