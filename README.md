@@ -21,7 +21,7 @@ interactions involved:
 
 ## Quickstart
 
-The following command will start a single master node:
+The following commands will start a single main node:
 ```bash
 ./prepare.sh
 podman-compose -f docker-compose.yml -f docker-compose-gvm.yml up -d --build
@@ -37,7 +37,7 @@ You can check that it finished by checking that one task was created.
 
 ## Connect additional scanner/s
 
-To connect an additional scanner to the master node, checkout the
+To connect an additional scanner to the main node, checkout the
 repository on another host and run the following commands:
 ```bash
 podman-compose -f docker-compose.yml -f docker-compose-ospd.yml up -d --build
@@ -46,7 +46,7 @@ podman-compose -f docker-compose.yml -f docker-compose-ospd.yml up -d --build
 podman-compose exec openvas systemctl status
 ```
 
-Thereafter, run the following commands on the host of the master node
+Thereafter, run the following commands on the host of the main node
 and follow the instructions:
 ```bash
 podman-compose exec openvas /bin/bash
@@ -87,8 +87,9 @@ While not strictly necessary, it's highly recommended to NOT use rootless
 podman for running in production.
 
 Background: rootless podman uses slirp4netns to forward network
-traffic from/to a container. This is a single process and with GVM scanning a
-whole network, this service is heavily overloaded and scans are slowed down.
+traffic from/to a container. This is a single process and with GVM possibly
+scanning a whole network at once, this service is heavily overloaded and scans
+are slowed down and might eventually show timeouts.
 
 ### Retrieve initial feed file from already running system
 
