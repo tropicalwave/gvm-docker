@@ -33,8 +33,6 @@ if [ ! -e /opt/gvm/.is_worker ]; then
     sudo -u postgres psql gvmd <<EOF
 create role dba with superuser noinherit;
 grant dba to gvm;
-create extension "uuid-ossp";
-create extension "pgcrypto";
 EOF
 
     su - gvm -c "gvm-manage-certs -a"

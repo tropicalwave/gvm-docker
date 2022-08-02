@@ -2,8 +2,11 @@ FROM debian:11 AS base
 RUN apt-get -y update && \
     apt-get install -y --no-install-recommends gnupg ca-certificates && \
     apt-key adv --fetch-keys https://dl.yarnpkg.com/debian/pubkey.gpg && \
+    apt-key adv --fetch-keys https://deb.nodesource.com/gpgkey/nodesource.gpg.key && \
     echo "deb https://dl.yarnpkg.com/debian/ stable main" > \
     /etc/apt/sources.list.d/yarn.list && \
+    echo "deb https://deb.nodesource.com/node_14.x bullseye main" > \
+    /etc/apt/sources.list.d/nodesource.list && \
     apt-get -y update && \
     apt-get -y autoremove && \
     apt-get install -y --no-install-recommends \
@@ -21,15 +24,18 @@ RUN apt-get -y update && \
     graphviz \
     heimdal-dev \
     less \
+    libbsd-dev \
     libglib2.0-dev \
     libgnutls28-dev \
     libgpgme-dev \
     libhiredis-dev \
     libical-dev \
+    libjson-glib-dev \
     libksba-dev \
     libldap2-dev \
     libmicrohttpd-dev \
     libnet-dev \
+    libpaho-mqtt-dev \
     libpcap-dev \
     libpopt-dev \
     libradcli-dev \
