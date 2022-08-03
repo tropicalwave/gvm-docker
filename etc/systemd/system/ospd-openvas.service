@@ -1,8 +1,8 @@
 [Unit]
 Description=Job that runs the ospd-openvas daemon
 Documentation=man:gvm
-After=network.target redis-server@openvas.service prepare-gvm.service
-Wants=redis-server@openvas.service
+After=network.target redis-server@openvas.service prepare-gvm.service notus-scanner.service
+Wants=redis-server@openvas.service notus-scanner.service
 
 [Service]
 Environment=PATH=/opt/gvm/bin/ospd-scanner/bin:/opt/gvm/bin:/opt/gvm/sbin:/opt/gvm/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin

@@ -14,6 +14,7 @@ for product in \
         gvmd \
         gsa \
         gsad \
+        notus-scanner \
         ospd-openvas \
         openvas-smb; do
     TAG="$VERSION"
@@ -21,7 +22,7 @@ for product in \
     git clone -b "$TAG" --depth 1 \
 	"https://github.com/greenbone/$product.git"
 
-    if echo $product | grep -q ospd-openvas; then
+    if echo $product | grep -E -q "^(ospd-openvas|notus-scanner)"; then
         continue
     elif echo $product | grep -q '^gsa$'; then
         cd "$product"
@@ -70,12 +71,24 @@ rm -rf gvm-tools
 virtualenv --python python3.9 /opt/gvm/bin/ospd-scanner/
 # shellcheck disable=SC1091
 source /opt/gvm/bin/ospd-scanner/bin/activate
-mkdir -p /run/gvm{,d}/ /run/gsad/
 cd ospd-openvas
 pip3 install .
 deactivate
 cd /opt/gvm/src
 rm -rf ospd-scanner
 
+# notus-scanner installation
+virtualenv --python python3.9 /opt/gvm/bin/notus-scanner/
+# shellcheck disable=SC1091
+source /opt/gvm/bin/notus-scanner/bin/activate
+cd notus-scanner
+pip3 install .
+python3 -m pip install poetry
+poetry install
+deactivate
+cd /opt/gvm/src
+rm -rf notus-scanner
+
+mkdir -p /run/gvm{,d}/ /run/{gsad,notus-scanner}/
 mkdir -p /var/log/gvm
 chown gvm:gvm /var/log/gvm

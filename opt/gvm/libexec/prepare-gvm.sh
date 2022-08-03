@@ -8,7 +8,7 @@ if [ -e /opt/gvm/.prepare-gvm-success ]; then
     exit 0
 fi
 
-for dir in /var/lib/gvm /run/gvm{,d} /var/lib/openvas; do
+for dir in /var/lib/gvm /run/{gvm,gvmd,notus-scanner} /var/lib/openvas; do
     chown -R gvm:gvm "$dir"
 done
 

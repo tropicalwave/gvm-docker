@@ -1,0 +1,4 @@
+#!/bin/bash
+DEFAULT_PARAMETERS=(--products-directory /var/lib/notus/products --log-file /var/log/gvm/notus-scanner.log)
+
+/opt/gvm/bin/notus-scanner/bin/python /opt/gvm/bin/notus-scanner/bin/notus-scanner "${DEFAULT_PARAMETERS[@]}"

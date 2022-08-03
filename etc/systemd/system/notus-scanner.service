@@ -1,0 +1,22 @@
+[Unit]
+Description=Notus Scanner
+Documentation=https://github.com/greenbone/notus-scanner
+After=mosquitto.service prepare-gvm.service
+Wants=mosquitto.service prepare-gvm.service
+
+[Service]
+Type=forking
+User=gvm
+Group=gvm
+WorkingDirectory=/opt/gvm
+PIDFile=/run/notus-scanner/notus-scanner.pid
+ExecStart=/opt/gvm/libexec/start-notus-scanner
+Restart=on-failure
+RestartSec=2min
+KillMode=process
+KillSignal=SIGINT
+GuessMainPID=no
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

@@ -1,5 +1,5 @@
 FROM debian:11 AS base
-RUN apt-get -y update && \
+RUN apt-get -y update -o APT::Update::Error-Mode=any && \
     apt-get install -y --no-install-recommends gnupg ca-certificates && \
     apt-key adv --fetch-keys https://dl.yarnpkg.com/debian/pubkey.gpg && \
     apt-key adv --fetch-keys https://deb.nodesource.com/gpgkey/nodesource.gpg.key && \
@@ -7,7 +7,7 @@ RUN apt-get -y update && \
     /etc/apt/sources.list.d/yarn.list && \
     echo "deb https://deb.nodesource.com/node_14.x bullseye main" > \
     /etc/apt/sources.list.d/nodesource.list && \
-    apt-get -y update && \
+    apt-get -y update -o APT::Update::Error-Mode=any && \
     apt-get -y autoremove && \
     apt-get install -y --no-install-recommends \
     bison \
@@ -43,6 +43,7 @@ RUN apt-get -y update && \
     libssh-gcrypt-dev \
     libunistring-dev \
     libxml2-dev \
+    mosquitto \
     openssh-server \
     nmap \
     node.js \
@@ -109,11 +110,13 @@ RUN systemctl disable redis-server && \
     systemctl disable ssh && \
     systemctl enable redis-server@openvas && \
     systemctl enable postgresql && \
+    systemctl enable mosquitto && \
     systemctl enable configure-gvm && \
     systemctl enable prepare-gvm && \
     systemctl enable gvmd-feedsync.timer && \
     systemctl enable gvmd && \
     systemctl enable gsad && \
+    systemctl enable notus-scanner && \
     systemctl enable ospd-openvas
 
 FROM base AS openvas
@@ -121,8 +124,10 @@ EXPOSE 22/tcp
 RUN sed -i 's/postgresql.service//g' /etc/systemd/system/prepare-gvm.service && \
     systemctl disable redis-server && \
     systemctl disable postgresql && \
+    systemctl enable mosquitto && \
     systemctl enable redis-server@openvas && \
     systemctl enable prepare-gvm && \
     systemctl enable gvmd-feedsync.timer && \
+    systemctl enable notus-scanner && \
     systemctl enable ospd-openvas && \
     touch /opt/gvm/.is_worker
