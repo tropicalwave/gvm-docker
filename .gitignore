@@ -1,4 +1,4 @@
-feeds.tar.gz
+feeds/feeds.tar.gz
 .gvm_pass
 .initial_feed_sync
 aws/.terraform*

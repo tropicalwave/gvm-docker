@@ -8,5 +8,4 @@ services:
     security_opt:
       - label=disable
     volumes:
-      - "./feeds.tar.gz:/opt/gvm/initial_data/feeds.tar.gz:ro"
-      - ".initial_feed_sync:/opt/gvm/initial_data/initial_feed_sync:ro"
+      - "./feeds/:/opt/gvm/initial_data/:rw"

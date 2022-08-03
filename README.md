@@ -95,14 +95,8 @@ are slowed down and might eventually show timeouts.
 
 To speed up startups of the system at a later point by decreasing the
 time for the initial feed sync, the file `feeds.tar.gz` can be retrieved
-from a running system.
-
-```bash
-podman exec -ti gvm-docker_openvas_1 /bin/bash
-# tar -czf /root/feeds.tar.gz var/lib/gvm/cert-data/ var/lib/gvm/scap-data/ var/lib/openvas/plugins/ var/lib/gvm/data-objects/gvmd/
-# exit
-podman cp gvm-docker_openvas_1:/root/feeds.tar.gz .
-```
+from a running system. Therefore, just look into `feeds/feeds.tar.gz`,
+which is updated once a day.
 
 ### Skip initial feed synchronization
 
@@ -112,5 +106,5 @@ be aware that this will only work if `feeds.tar.gz` has been initialized
 properly beforehand.
 
 ```bash
-echo NO >.initial_feed_sync
+echo NO >feeds/initial_feed_sync
 ```

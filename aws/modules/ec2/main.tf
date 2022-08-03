@@ -52,7 +52,7 @@ resource "aws_instance" "ec2_public" {
   }
 
   provisioner "file" {
-    source      = "../feeds.tar.gz"
+    source      = "../feeds/feeds.tar.gz"
     destination = "/tmp/feeds.tar.gz"
 
     connection {
@@ -82,11 +82,11 @@ resource "aws_instance" "ec2_public" {
       "sudo dnf install pwgen git podman-compose -y",
       "tar xf /tmp/head.tar.gz",
       "cd gvm-docker",
-      "cp /tmp/feeds.tar.gz .",
-      "mkdir -p slaves/ logs/",
+      "mkdir feeds",
+      "mv /tmp/feeds.tar.gz feeds/",
       "mv /tmp/.gvm_pass .",
-      "touch .initial_feed_sync",
-      "sudo podman-compose -f docker-compose.yml up -d"]
+      "touch feeds/initial_feed_sync",
+      "podman-compose -f docker-compose.yml -f docker-compose-gvm.yml up -d"]
 
     connection {
       type        = "ssh"
