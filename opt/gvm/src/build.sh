@@ -92,3 +92,6 @@ rm -rf notus-scanner
 mkdir -p /run/gvm{,d}/ /run/{gsad,notus-scanner}/
 mkdir -p /var/log/gvm
 chown gvm:gvm /var/log/gvm
+
+mkdir -p /var/lib/redis/openvas
+chown redis:redis /var/lib/redis/openvas
