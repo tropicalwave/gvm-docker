@@ -88,12 +88,12 @@ def create_schedule(name, weekday, hour):
 
 
 with open("/opt/gvm/etc/config.csv") as csvfile:
-    reader = csv.DictReader(filter(lambda row: row[0] != "#", csvfile))
+    reader = csv.DictReader()
     for row in reader:
-        taskname = row["taskname"]
-        hosts = row["hosts"].split(";")
-        weekday = int(row["weekday"])
-        hour = int(row["hour"])
+        taskname = row["Task"]
+        hosts = row["Hosts"].split(";")
+        weekday = int(row["Weekday"])
+        hour = int(row["Hour"])
 
         create_schedule(taskname, weekday, hour)
         create_target(taskname, hosts)

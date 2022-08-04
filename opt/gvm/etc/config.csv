@@ -1,4 +1,2 @@
-# weekday notation: 0 = Monday, 6 = Sunday
-# hosts are separated by semicolon
-taskname,hosts,weekday,hour
+Task,Hosts,Weekday,Hour
 simpletask,localhost,2,20
