@@ -1,11 +1,11 @@
 FROM debian:11 AS base
 RUN apt-get -y update -o APT::Update::Error-Mode=any && \
-    apt-get install -y --no-install-recommends gnupg ca-certificates && \
-    apt-key adv --fetch-keys https://dl.yarnpkg.com/debian/pubkey.gpg && \
-    apt-key adv --fetch-keys https://deb.nodesource.com/gpgkey/nodesource.gpg.key && \
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" > \
+    apt-get install -y --no-install-recommends curl gnupg ca-certificates && \
+    curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor > /usr/share/keyrings/yarnkey.gpg && \
+    curl -sL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor > /usr/share/keyrings/nodekey.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian/ stable main" > \
     /etc/apt/sources.list.d/yarn.list && \
-    echo "deb https://deb.nodesource.com/node_14.x bullseye main" > \
+    echo "deb [signed-by=/usr/share/keyrings/nodekey.gpg] https://deb.nodesource.com/node_14.x bullseye main" > \
     /etc/apt/sources.list.d/nodesource.list && \
     apt-get -y update -o APT::Update::Error-Mode=any && \
     apt-get -y autoremove && \
@@ -94,7 +94,8 @@ RUN /opt/gvm/src/build.sh && \
 
 RUN cp /opt/gvm/src/redis-openvas.conf /etc/redis/ && \
     echo "db_address = /run/redis-openvas/redis.sock" > \
-    /etc/openvas/openvas.conf
+    /etc/openvas/openvas.conf && \
+    echo 'jit = off' >> /etc/postgresql/13/main/postgresql.conf
 
 COPY opt/gvm/libexec/* /opt/gvm/libexec/
 COPY opt/gvm/sbin/* /opt/gvm/sbin/
