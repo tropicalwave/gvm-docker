@@ -70,4 +70,12 @@ for i in openvas.log gsad.log; do
     chown gvm:gvm "/var/log/gvm/$i"
 done
 
+# Enable feed validation
+curl -f -L https://www.greenbone.net/GBCommunitySigningKey.asc -o /tmp/GBCommunitySigningKey.asc
+FPR="$(gpg --with-colons --import-options show-only --import /tmp/GBCommunitySigningKey.asc | awk -F: '/^fpr:/ { print $10 }')"
+echo "$FPR:6:" > /tmp/ownertrust.txt
+su - gvm -c "gpg --import /tmp/GBCommunitySigningKey.asc"
+su - gvm -c "gpg --import-ownertrust < /tmp/ownertrust.txt"
+rm -f /tmp/ownertrust.txt /tmp/GBCommunitySigningKey.asc
+
 touch /opt/gvm/.prepare-gvm-success

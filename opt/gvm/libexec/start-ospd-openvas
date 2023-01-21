@@ -1,4 +1,4 @@
 #!/bin/bash
 DEFAULT_PARAMETERS=(--pid-file /run/gvm/ospd-openvas.pid --unix-socket /run/gvm/ospd.sock --log-file /var/log/gvm/ospd-scanner.log --lock-file-dir /run/gvm/ospd/)
 
-/opt/gvm/bin/ospd-scanner/bin/python /opt/gvm/bin/ospd-scanner/bin/ospd-openvas "${DEFAULT_PARAMETERS[@]}"
+GNUPGHOME="$HOME/.gnupg/" /opt/gvm/bin/ospd-scanner/bin/python /opt/gvm/bin/ospd-scanner/bin/ospd-openvas "${DEFAULT_PARAMETERS[@]}"

@@ -5,34 +5,38 @@ export PKG_CONFIG_PATH=/opt/gvm/lib/pkgconfig:$PKG_CONFIG_PATH
 mkdir -p /opt/gvm/src
 cd /opt/gvm/src
 
-VERSION=v22.4.0
-INSTALL_PREFIX=/opt/gvm
-for product in \
-        gvm-libs \
-        pg-gvm \
-        openvas \
-        gvmd \
-        gsa \
-        gsad \
-        notus-scanner \
-        ospd-openvas \
-        openvas-smb; do
-    TAG="$VERSION"
+PRODUCT_VERSIONS=(
+    "gvm-libs v22.4.2"
+    "pg-gvm v22.4.0"
+    "openvas-scanner v22.4.1"
+    "gvmd v22.4.2"
+    "gsa v22.4.1"
+    "gsad v22.4.1"
+    "notus-scanner v22.4.2"
+    "ospd-openvas v22.4.3"
+    "openvas-smb v22.4.0"
+)
 
-    git clone -b "$TAG" --depth 1 \
+INSTALL_PREFIX=/opt/gvm
+for product_version in "${PRODUCT_VERSIONS[@]}"; do
+    IFS=' ' read -r -a data <<< "${product_version}"
+    product="${data[0]}"
+    version="${data[1]}"
+
+    git clone -b "$version" --depth 1 \
 	"https://github.com/greenbone/$product.git"
 
-    if echo $product | grep -E -q "^(ospd-openvas|notus-scanner)"; then
+    if echo "$product" | grep -E -q "^(ospd-openvas|notus-scanner)"; then
         continue
-    elif echo $product | grep -q '^gsa$'; then
+    elif echo "$product" | grep -q '^gsa$'; then
         cd "$product"
         yarn
         yarn build
         mkdir -p "$INSTALL_PREFIX/share/gvm/gsad/web/"
         cp -r build/* "$INSTALL_PREFIX/share/gvm/gsad/web/"
     else
-        if [[ "$product" == "openvas" ]]; then
-            cp openvas/config/redis-openvas.conf /opt/gvm/src
+        if [[ "$product" == "openvas-scanner" ]]; then
+            cp openvas-scanner/config/redis-openvas.conf /opt/gvm/src
         fi
 
         mkdir "$product/build"
@@ -85,6 +89,15 @@ cd notus-scanner
 pip3 install .
 python3 -m pip install poetry
 poetry install
+
+# Run poetry installation again, because the wheel build
+# command requires urllib3; however, "poetry install" will
+# have removed it...
+# We need the wheel build since otherwise the needed file
+# daemon.py will not be installed...
+python3 -m pip install poetry
+poetry build -f wheel
+pip install "$(ls dist/notus_scanner-*.whl)" --force-reinstall
 deactivate
 cd /opt/gvm/src
 rm -rf notus-scanner
