@@ -1,2 +1,3 @@
-Task,Hosts,Weekday,Hour
-simpletask,localhost,2,20
+Task,Scanner,Hosts,Weekday,Hour
+simpletask,,localhost,2,20
+#remotetask,myremote,localhost,3,20

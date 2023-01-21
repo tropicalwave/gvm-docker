@@ -3,6 +3,8 @@
 # type: ignore
 
 import csv
+import re
+import subprocess
 import sys
 import time
 from datetime import datetime
@@ -15,14 +17,20 @@ from icalendar import Calendar, Event
 if Path("/opt/gvm/.configure-gvm-success").exists():
     sys.exit(0)
 
-scanners = gmp.get_scanners()
-scanner_id = ""
-for i, scanner in enumerate(scanners.xpath("scanner")):
-    if scanner.xpath("name/text()")[0] == "OpenVAS Default":
-        scanner_id = scanner.xpath("@id")[0]
-        break
 
-if len(scanner_id) == 0:
+def get_scanner_id(scanner_name):
+    scanners = gmp.get_scanners()
+    scanner_id = None
+    for i, scanner in enumerate(scanners.xpath("scanner")):
+        if scanner.xpath("name/text()")[0] == scanner_name:
+            scanner_id = scanner.xpath("@id")[0]
+            break
+
+    return scanner_id
+
+
+default_scanner_id = get_scanner_id("OpenVAS Default")
+if default_scanner_id is None:
     raise Exception("Could not get ID of default scanner")
 
 while True:
@@ -44,7 +52,7 @@ while True:
         break
 
 
-def create_task(name):
+def create_task(name, scanner_id):
     targets = gmp.get_targets()
     target_id = ""
     for i, target in enumerate(targets.xpath("target")):
@@ -87,16 +95,42 @@ def create_schedule(name, weekday, hour):
     gmp.create_schedule(name=name, icalendar=cal.to_ical(), timezone="UTC")
 
 
+created_scanners = []
 with open("/opt/gvm/etc/config.csv") as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
+        if row["Task"].startswith("#"):
+            # Ignore commented line in configuration file
+            continue
+
         taskname = row["Task"]
+        scanner = row["Scanner"]
         hosts = row["Hosts"].split(";")
         weekday = int(row["Weekday"])
         hour = int(row["Hour"])
 
+        if re.match("^[a-zA-Z0-9]*$", scanner) is None:
+            raise Exception("Invalid scanner name: %s" % scanner)
+
+        if scanner != "" and scanner not in created_scanners:
+            # Create scanner
+            exit, out = subprocess.getstatusoutput(
+                f"/opt/gvm/sbin/gvmd --create-scanner='{scanner}' "
+                f"--scanner-type=OpenVAS "
+                f"--scanner-host=/opt/gvm/remote-scanners/{scanner}.sock"
+            )
+            if exit != 0:
+                raise Exception(f"Could not create scanner {scanner}: {out}")
+            else:
+                created_scanners.append(scanner)
+
+        if scanner == "":
+            scanner_id = default_scanner_id
+        else:
+            scanner_id = get_scanner_id(scanner)
+
         create_schedule(taskname, weekday, hour)
         create_target(taskname, hosts)
-        create_task(taskname)
+        create_task(taskname, scanner_id)
 
 Path("/opt/gvm/.configure-gvm-success").touch()
