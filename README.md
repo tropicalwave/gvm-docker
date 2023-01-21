@@ -40,6 +40,7 @@ You can check that it finished by checking that one task was created.
 To connect an additional scanner to the main node, checkout the
 repository on another host and run the following commands:
 ```bash
+./prepare.sh
 podman-compose -f docker-compose.yml -f docker-compose-ospd.yml up -d --build
 
 # Wait until the following command shows that all services are running.
