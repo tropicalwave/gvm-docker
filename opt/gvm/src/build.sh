@@ -42,7 +42,7 @@ for product_version in "${PRODUCT_VERSIONS[@]}"; do
         mkdir "$product/build"
         cd "$product/build"
         cmake -DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX" ..
-        make
+        make -j $(nproc)
         if [[ "$product" != "openvas-smb" ]] && \
                 [[ "$product" != "pg-gvm" ]]; then
             make doc
