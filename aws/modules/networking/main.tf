@@ -1,3 +1,17 @@
+terraform {
+  required_providers {
+    http = {
+      source  = "hashicorp/http"
+      version = ">= 2.2.0"
+    }
+
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 4.22.0"
+    }
+  }
+}
+
 data "aws_availability_zones" "available" {}
 
 data "http" "myip" {
@@ -23,7 +37,7 @@ resource "aws_security_group" "allow_ssh_pub" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["${chomp(data.http.myip.body)}/32"]
+    cidr_blocks = ["${chomp(data.http.myip.response_body)}/32"]
   }
 
   egress {

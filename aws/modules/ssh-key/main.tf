@@ -1,12 +1,30 @@
 // Generate SSH keypair and upload the public key to AWS
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 4.22.0"
+    }
+
+    tls = {
+      source  = "hashicorp/tls"
+      version = ">= 3.4.0"
+    }
+
+    local = {
+      source  = "hashicorp/local"
+      version = ">= 2.2.3"
+    }
+  }
+}
 
 resource "tls_private_key" "key" {
   algorithm = "RSA"
 }
 
-resource "local_file" "private_key" {
+resource "local_sensitive_file" "private_key" {
   filename          = "${var.namespace}-key.pem"
-  sensitive_content = tls_private_key.key.private_key_pem
+  content           = tls_private_key.key.private_key_pem
   file_permission   = "0400"
 }
 

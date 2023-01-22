@@ -1,4 +1,16 @@
-data "aws_availability_zones" "available" {}
+terraform {
+  required_providers {
+    random = {
+      source  = "hashicorp/random"
+      version = ">= 3.3.2"
+    }
+
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 4.22.0"
+    }
+  }
+}
 
 data "aws_ami" "gvm_host" {
   most_recent = true
@@ -6,20 +18,20 @@ data "aws_ami" "gvm_host" {
 
   filter {
     name   = "name"
-    values = ["Rocky Linux 8.4-d6577ceb-8ea8-4e0e-84c6-f098fc302e82"]
+    values = ["Rocky-9-EC2-Base-9.1-20221123.0.x86_64-3f230a17-9877-4b16-aa5e-b1ff34ab206b"]
   }
 }
 
 resource "random_password" "gvm_pw" {
   length           = 16
   special          = true
-  override_special = "_%@"
+  override_special = "_@"
 }
 
 resource "aws_instance" "ec2_public" {
   ami                         = data.aws_ami.gvm_host.id
   associate_public_ip_address = true
-  instance_type               = "i3.xlarge"
+  instance_type               = "i4i.xlarge"
   key_name                    = var.key_name
   subnet_id                   = var.vpc.public_subnets[0]
   vpc_security_group_ids      = [var.sg_pub_id]
@@ -79,14 +91,14 @@ resource "aws_instance" "ec2_public" {
     inline = [
       "set -o errexit",
       "sudo dnf install epel-release -y",
-      "sudo dnf install pwgen git podman-compose -y",
+      "sudo dnf install pwgen podman-compose -y",
       "tar xf /tmp/head.tar.gz",
       "cd gvm-docker",
       "mkdir feeds",
       "mv /tmp/feeds.tar.gz feeds/",
       "mv /tmp/.gvm_pass .",
       "touch feeds/initial_feed_sync",
-      "podman-compose -f docker-compose.yml -f docker-compose-gvm.yml up -d"]
+      "sudo podman-compose -f docker-compose.yml -f docker-compose-gvm.yml up -d"]
 
     connection {
       type        = "ssh"
