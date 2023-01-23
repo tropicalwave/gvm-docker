@@ -1,0 +1,7 @@
+NVT;Task;IP;Port;Expiration;Reason
+# NVT - ID of NVT
+# Task - task name (or empty if valid for all tasks)
+# IP - comma-separated IP addresses (or empty for all)
+# Port - specific port (or empty)
+# Expiration - expiration date (or empty if non-expiring)
+# Reason - text for override

@@ -57,6 +57,17 @@ podman-compose exec openvas /bin/bash
 The scanner will now be shown at <https://localhost:4443/scanners> and
 can be used within tasks.
 
+## Configuration as code
+
+Tasks, schedules, and overrides can be configured automatically
+with the csv files located at `opt/gvm/etc`. Those files will be
+parsed at startup time. Furthermore, overrides can be changed at
+runtime as follows:
+
+1. Enter container: `podman-compose exec openvas /bin/bash`
+2. Change `/opt/gvm/etc/overrides.csv` as required.
+3. Configure overrides: `systemctl start set-overrides`
+
 ## Issues
 
 ### cgroups v2

@@ -1,0 +1,13 @@
+[Unit]
+Description=configure overrides
+Requires=configure-gvm.service
+After=configure-gvm.service
+
+[Service]
+User=gvm
+Group=gvm
+ExecStart=/opt/gvm/bin/gvm-script socket /opt/gvm/libexec/set-overrides.py
+Type=oneshot
+
+[Install]
+WantedBy=multi-user.target

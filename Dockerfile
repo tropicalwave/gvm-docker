@@ -113,6 +113,7 @@ RUN systemctl disable redis-server && \
     systemctl enable postgresql && \
     systemctl enable mosquitto && \
     systemctl enable configure-gvm && \
+    systemctl enable set-overrides && \
     systemctl enable prepare-gvm && \
     systemctl enable gvmd-feedsync.timer && \
     systemctl enable gvmd && \
