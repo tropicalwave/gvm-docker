@@ -3,14 +3,14 @@ set -e
 
 readonly LOG_FILE="/var/log/gvm/feedsync.out.log"
 
+for dir in /var/lib/gvm /run/{gvm,gvmd,notus-scanner} /var/lib/openvas; do
+    chown -R gvm:gvm "$dir"
+done
+
 if [ -e /opt/gvm/.prepare-gvm-success ]; then
     echo "System already initialized"
     exit 0
 fi
-
-for dir in /var/lib/gvm /run/{gvm,gvmd,notus-scanner} /var/lib/openvas; do
-    chown -R gvm:gvm "$dir"
-done
 
 mkdir -p /opt/gvm/var/log
 ln -s /var/log/gvm /opt/gvm/var/log
