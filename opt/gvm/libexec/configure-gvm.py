@@ -19,7 +19,7 @@ if Path("/opt/gvm/.configure-gvm-success").exists():
 
 
 def get_scanner_id(scanner_name):
-    scanners = gmp.get_scanners()
+    scanners = gmp.get_scanners(filter_string="rows=-1")
     scanner_id = None
     for i, scanner in enumerate(scanners.xpath("scanner")):
         if scanner.xpath("name/text()")[0] == scanner_name:
@@ -29,42 +29,35 @@ def get_scanner_id(scanner_name):
     return scanner_id
 
 
-default_scanner_id = get_scanner_id("OpenVAS Default")
-if default_scanner_id is None:
-    raise Exception("Could not get ID of default scanner")
-
-while True:
-    # the scan config list is empty at startup time
-    scan_configs = gmp.get_scan_configs()
-    if len(scan_configs.xpath("config/@id")) < 6:
-        time.sleep(10)
-        continue
-
-    config_id = ""
-    for i, conf in enumerate(scan_configs.xpath("config")):
-        if conf.xpath("name/text()")[0] == "Full and fast":
-            config_id = conf.xpath("@id")[0]
+def get_schedule_id(schedule_name):
+    schedules = gmp.get_schedules(filter_string="rows=-1")
+    schedule_id = None
+    for i, schedule in enumerate(schedules.xpath("schedule")):
+        if schedule.xpath("name/text()")[0] == schedule_name:
+            schedule_id = schedule.xpath("@id")[0]
             break
 
-    if len(config_id) == 0:
-        raise Exception("Could not get ID of default scan config")
-    else:
-        break
+    return schedule_id
 
 
-def create_task(name, scanner_id):
-    targets = gmp.get_targets()
-    target_id = ""
+def get_target_id(target_name):
+    targets = gmp.get_targets(filter_string="rows=-1")
+    target_id = None
     for i, target in enumerate(targets.xpath("target")):
-        if target.xpath("name/text()")[0] == name:
+        if target.xpath("name/text()")[0] == target_name:
             target_id = target.xpath("@id")[0]
             break
 
-    if len(target_id) == 0:
-        raise Exception("Could not get ID of target %s" % name)
+    return target_id
 
+
+def create_task(name, scanner_id):
     gmp.create_task(
-        name=name, config_id=config_id, target_id=target_id, scanner_id=scanner_id
+        name=name,
+        config_id=config_id,
+        target_id=get_target_id(name),
+        schedule_id=get_schedule_id(name),
+        scanner_id=scanner_id,
     )
 
 
@@ -94,6 +87,28 @@ def create_schedule(name, weekday, hour):
 
     gmp.create_schedule(name=name, icalendar=cal.to_ical(), timezone="UTC")
 
+
+default_scanner_id = get_scanner_id("OpenVAS Default")
+if default_scanner_id is None:
+    raise Exception("Could not get ID of default scanner")
+
+while True:
+    # the scan config list is empty at startup time
+    scan_configs = gmp.get_scan_configs(filter_string="rows=-1")
+    if len(scan_configs.xpath("config/@id")) < 6:
+        time.sleep(10)
+        continue
+
+    config_id = ""
+    for i, conf in enumerate(scan_configs.xpath("config")):
+        if conf.xpath("name/text()")[0] == "Full and fast":
+            config_id = conf.xpath("@id")[0]
+            break
+
+    if len(config_id) == 0:
+        raise Exception("Could not get ID of default scan config")
+    else:
+        break
 
 created_scanners = []
 with open("/opt/gvm/etc/config.csv") as csvfile:
