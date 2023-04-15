@@ -95,7 +95,8 @@ RUN /opt/gvm/src/build.sh && \
 RUN cp /opt/gvm/src/redis-openvas.conf /etc/redis/ && \
     echo "db_address = /run/redis-openvas/redis.sock" > \
     /etc/openvas/openvas.conf && \
-    echo 'jit = off' >> /etc/postgresql/13/main/postgresql.conf
+    printf "jit = off\nssl_min_protocol_version = 'TLSv1.3'\n" \
+    >> /etc/postgresql/13/main/postgresql.conf
 
 COPY opt/gvm/libexec/* /opt/gvm/libexec/
 COPY opt/gvm/sbin/* /opt/gvm/sbin/
