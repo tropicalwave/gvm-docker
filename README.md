@@ -86,13 +86,6 @@ like this:
 pids_limit = 10240
 ```
 
-### Interrupted scans due to failing host alive detection
-
-If scans interrupt at 0% and you're using rootless podman, this might
-be due to the target using ICMP ping as "Alive Test" for the hosts (which
-is not allowed as a default). In this case, please use a setting like
-"Consider Alive".
-
 ### Rootless podman
 
 While not strictly necessary, it's highly recommended to NOT use rootless

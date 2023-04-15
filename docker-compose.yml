@@ -9,3 +9,5 @@ services:
       - label=disable
     volumes:
       - "./feeds/:/opt/gvm/initial_data/:rw"
+    cap_add:
+      - NET_RAW

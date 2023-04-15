@@ -63,10 +63,7 @@ def create_task(name, scanner_id):
 
 def create_target(name, hosts):
     iana_tcp_udp = "4a4717fe-57d2-11e1-9a26-406186ea4fc5"
-    alive_test = [X for X in gmp.types.AliveTest if X.name == "CONSIDER_ALIVE"][0]
-    gmp.create_target(
-        name=name, hosts=hosts, port_list_id=iana_tcp_udp, alive_test=alive_test
-    )
+    gmp.create_target(name=name, hosts=hosts, port_list_id=iana_tcp_udp)
 
 
 def create_schedule(name, weekday, hour):
