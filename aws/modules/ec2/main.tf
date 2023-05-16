@@ -98,7 +98,7 @@ resource "aws_instance" "ec2_public" {
       "mv /tmp/feeds.tar.gz feeds/",
       "mv /tmp/.gvm_pass .",
       "touch feeds/initial_feed_sync",
-      "sudo podman-compose -f docker-compose.yml -f docker-compose-gvm.yml up -d"]
+    "sudo podman-compose -f docker-compose.yml -f docker-compose-gvm.yml up -d"]
 
     connection {
       type        = "ssh"

@@ -19,7 +19,7 @@ data "http" "myip" {
 }
 
 module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
+  source         = "terraform-aws-modules/vpc/aws"
   name           = "${var.namespace}-vpc"
   cidr           = "10.0.0.0/16"
   azs            = data.aws_availability_zones.available.names
