@@ -68,6 +68,13 @@ runtime as follows:
 2. Change `/opt/gvm/etc/overrides.csv` as required.
 3. Configure overrides: `systemctl start set-overrides`
 
+## Update version numbers
+
+To set all (sub-)products in their latest version, please run the following command:
+```bash
+./stable-version-numbers.py > opt/gvm/src/versions.csv
+```
+
 ## Issues
 
 ### cgroups v2
