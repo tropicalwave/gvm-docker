@@ -88,7 +88,7 @@ COPY etc/sudoers.d/gvm /etc/sudoers.d/
 RUN adduser gvm --disabled-password --home /opt/gvm/ --gecos '' && \
     usermod -aG redis gvm
 
-COPY opt/gvm/src/build.sh /opt/gvm/src/
+COPY opt/gvm/src/* /opt/gvm/src/
 RUN /opt/gvm/src/build.sh && \
     ldconfig
 

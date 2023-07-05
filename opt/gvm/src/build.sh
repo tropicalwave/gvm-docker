@@ -5,24 +5,8 @@ export PKG_CONFIG_PATH=/opt/gvm/lib/pkgconfig:$PKG_CONFIG_PATH
 mkdir -p /opt/gvm/src
 cd /opt/gvm/src
 
-PRODUCT_VERSIONS=(
-    "gvm-libs v22.4.2"
-    "pg-gvm v22.4.0"
-    "openvas-scanner v22.4.1"
-    "gvmd v22.4.2"
-    "gsa v22.4.1"
-    "gsad v22.4.1"
-    "notus-scanner v22.4.2"
-    "ospd-openvas v22.4.3"
-    "openvas-smb v22.4.0"
-)
-
 INSTALL_PREFIX=/opt/gvm
-for product_version in "${PRODUCT_VERSIONS[@]}"; do
-    IFS=' ' read -r -a data <<< "${product_version}"
-    product="${data[0]}"
-    version="${data[1]}"
-
+while IFS=',' read -r product version; do
     git clone -b "$version" --depth 1 \
 	"https://github.com/greenbone/$product.git"
 
@@ -52,7 +36,7 @@ for product_version in "${PRODUCT_VERSIONS[@]}"; do
 
     cd /opt/gvm/src
     rm -rf "$product"
-done
+done </opt/gvm/src/versions.csv
 
 # gvm-tools
 git clone -b v22.6.1 --depth 1 \
