@@ -65,6 +65,18 @@ deactivate
 cd /opt/gvm/src
 rm -rf ospd-scanner
 
+# greenbone-feed-sync installation
+git clone -b v23.6.0 --depth 1 \
+    https://github.com/greenbone/greenbone-feed-sync.git
+virtualenv --python python3.9 /opt/gvm/bin/greenbone-feed-sync-env/
+# shellcheck disable=SC1091
+source /opt/gvm/bin/greenbone-feed-sync-env/bin/activate
+cd greenbone-feed-sync
+pip3 install .
+python3 -m pip install poetry
+poetry install
+cd /opt/gvm/src
+
 # notus-scanner installation
 virtualenv --python python3.9 /opt/gvm/bin/notus-scanner/
 # shellcheck disable=SC1091

@@ -23,6 +23,11 @@ if ! grep -q NO /opt/gvm/initial_data/initial_feed_sync; then
 fi
 sudo openvas -u
 
+for i in openvas.log gsad.log; do
+    touch "/var/log/gvm/$i"
+    chown gvm:gvm "/var/log/gvm/$i"
+done
+
 su - gvm -c "mkdir -p /opt/gvm/.ssh/"
 
 if [ ! -e /opt/gvm/.is_worker ]; then
@@ -34,6 +39,9 @@ if [ ! -e /opt/gvm/.is_worker ]; then
 create role dba with superuser noinherit;
 grant dba to gvm;
 EOF
+
+    # Initialize gpg files (needed for ospd-openvas)
+    su - gvm -c "gpg --list-keys"
 
     su - gvm -c "gvm-manage-certs -a"
 
@@ -64,11 +72,6 @@ fi
 # Necessary for remote scanners as ospd-openvas searches
 # for certificates and keys under /usr/var
 ln -s /var /usr/
-
-for i in openvas.log gsad.log; do
-    touch "/var/log/gvm/$i"
-    chown gvm:gvm "/var/log/gvm/$i"
-done
 
 # Enable feed validation
 curl -f -L https://www.greenbone.net/GBCommunitySigningKey.asc -o /tmp/GBCommunitySigningKey.asc

@@ -70,7 +70,7 @@ runtime as follows:
 
 ## Update version numbers
 
-To set all (sub-)products in their latest version, please run the following command:
+To set all (sub-)products in their latest stable version, please run the following command:
 ```bash
 ./stable-version-numbers.py > opt/gvm/src/versions.csv
 ```
