@@ -75,6 +75,8 @@ cd greenbone-feed-sync
 pip3 install .
 python3 -m pip install poetry
 poetry install
+deactivate
+ln -s "/opt/gvm/bin/greenbone-feed-sync-env/bin/greenbone-feed-sync" /opt/gvm/bin/
 cd /opt/gvm/src
 
 # notus-scanner installation
