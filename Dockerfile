@@ -1,4 +1,4 @@
-FROM debian:11 AS base
+FROM debian:12 AS base
 RUN apt-get -y update -o APT::Update::Error-Mode=any && \
     apt-get install -y --no-install-recommends curl gnupg ca-certificates && \
     curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor > /usr/share/keyrings/yarnkey.gpg && \
@@ -86,6 +86,7 @@ COPY etc/ld.so.conf.d/gvm.conf /etc/ld.so.conf.d/
 COPY etc/sudoers.d/gvm /etc/sudoers.d/
 
 RUN adduser gvm --disabled-password --home /opt/gvm/ --gecos '' && \
+    chmod 755 /opt/gvm && \
     usermod -aG redis gvm
 
 COPY opt/gvm/src/* /opt/gvm/src/
@@ -96,7 +97,7 @@ RUN cp /opt/gvm/src/redis-openvas.conf /etc/redis/ && \
     echo "db_address = /run/redis-openvas/redis.sock" > \
     /etc/openvas/openvas.conf && \
     printf "jit = off\nssl_min_protocol_version = 'TLSv1.3'\n" \
-    >> /etc/postgresql/13/main/postgresql.conf
+    >> /etc/postgresql/15/main/postgresql.conf
 
 COPY opt/gvm/libexec/* /opt/gvm/libexec/
 COPY opt/gvm/sbin/* /opt/gvm/sbin/

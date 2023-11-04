@@ -3,6 +3,9 @@ set -e
 
 readonly LOG_FILE="/var/log/gvm/feedsync.out.log"
 
+mkdir -p /var/lib/notus/products
+chown -R gvm:gvm /var/lib/notus
+
 for dir in /var/lib/gvm /run/{gvm,gvmd,notus-scanner} /var/lib/openvas; do
     chown -R gvm:gvm "$dir"
 done

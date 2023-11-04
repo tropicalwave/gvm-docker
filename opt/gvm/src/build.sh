@@ -41,7 +41,7 @@ done </opt/gvm/src/versions.csv
 # gvm-tools
 git clone -b v22.6.1 --depth 1 \
     https://github.com/greenbone/gvm-tools.git
-virtualenv --python python3.9  /opt/gvm/bin/gvm-tools/
+virtualenv --python python3.11  /opt/gvm/bin/gvm-tools/
 # shellcheck disable=SC1091
 source /opt/gvm/bin/gvm-tools/bin/activate
 cd gvm-tools
@@ -56,7 +56,7 @@ cd /opt/gvm/src
 rm -rf gvm-tools
 
 # ospd-scanner installation
-virtualenv --python python3.9 /opt/gvm/bin/ospd-scanner/
+virtualenv --python python3.11 /opt/gvm/bin/ospd-scanner/
 # shellcheck disable=SC1091
 source /opt/gvm/bin/ospd-scanner/bin/activate
 cd ospd-openvas
@@ -68,7 +68,7 @@ rm -rf ospd-scanner
 # greenbone-feed-sync installation
 git clone -b v23.6.0 --depth 1 \
     https://github.com/greenbone/greenbone-feed-sync.git
-virtualenv --python python3.9 /opt/gvm/bin/greenbone-feed-sync-env/
+virtualenv --python python3.11 /opt/gvm/bin/greenbone-feed-sync-env/
 # shellcheck disable=SC1091
 source /opt/gvm/bin/greenbone-feed-sync-env/bin/activate
 cd greenbone-feed-sync
@@ -80,7 +80,7 @@ ln -s "/opt/gvm/bin/greenbone-feed-sync-env/bin/greenbone-feed-sync" /opt/gvm/bi
 cd /opt/gvm/src
 
 # notus-scanner installation
-virtualenv --python python3.9 /opt/gvm/bin/notus-scanner/
+virtualenv --python python3.11 /opt/gvm/bin/notus-scanner/
 # shellcheck disable=SC1091
 source /opt/gvm/bin/notus-scanner/bin/activate
 cd notus-scanner
