@@ -1,3 +1,6 @@
+# checkov:skip=CKV_DOCKER_2:healthcheck not enabled
+# checkov:skip=CKV_DOCKER_3:no user necessary
+# checkov:skip=CKV2_DOCKER_1:sudo required for application
 FROM debian:12 AS base
 RUN apt-get -y update -o APT::Update::Error-Mode=any && \
     apt-get install -y --no-install-recommends curl gnupg ca-certificates && \
@@ -25,6 +28,7 @@ RUN apt-get -y update -o APT::Update::Error-Mode=any && \
     heimdal-dev \
     less \
     libbsd-dev \
+    libcurl4-openssl-dev \
     libglib2.0-dev \
     libgnutls28-dev \
     libgpgme-dev \
@@ -124,6 +128,7 @@ RUN systemctl disable redis-server && \
     systemctl enable ospd-openvas
 
 FROM base AS openvas
+# checkov:skip=CKV_DOCKER_1:SSH intentionally exposed
 EXPOSE 22/tcp
 RUN sed -i 's/postgresql.service//g' /etc/systemd/system/prepare-gvm.service && \
     systemctl disable redis-server && \

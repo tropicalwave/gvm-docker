@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+# pylint:disable=invalid-name,import-error
+"""Retrieve and output latest stable product version numbers"""
 import json
 
 import requests
@@ -15,7 +17,8 @@ for product in [
     "openvas-smb",
 ]:
     r = requests.get(
-        f"https://registry.hub.docker.com/v2/repositories/greenbone/{product}/tags?page_size=1000"
+        f"https://registry.hub.docker.com/v2/repositories/greenbone/{product}/tags?page_size=1000",
+        timeout=60,
     )
     r.raise_for_status()
     obj = json.loads(r.text)

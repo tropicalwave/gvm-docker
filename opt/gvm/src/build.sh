@@ -8,7 +8,7 @@ cd /opt/gvm/src
 INSTALL_PREFIX=/opt/gvm
 while IFS=',' read -r product version; do
     git clone -b "$version" --depth 1 \
-	"https://github.com/greenbone/$product.git"
+        "https://github.com/greenbone/$product.git"
 
     if echo "$product" | grep -E -q "^(ospd-openvas|notus-scanner)"; then
         continue
@@ -27,8 +27,8 @@ while IFS=',' read -r product version; do
         cd "$product/build"
         cmake -DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX" ..
         make -j "$(nproc)"
-        if [[ "$product" != "openvas-smb" ]] && \
-                [[ "$product" != "pg-gvm" ]]; then
+        if [[ "$product" != "openvas-smb" ]] &&
+            [[ "$product" != "pg-gvm" ]]; then
             make doc
         fi
         make install
@@ -41,7 +41,7 @@ done </opt/gvm/src/versions.csv
 # gvm-tools
 git clone -b v22.6.1 --depth 1 \
     https://github.com/greenbone/gvm-tools.git
-virtualenv --python python3.11  /opt/gvm/bin/gvm-tools/
+virtualenv --python python3.11 /opt/gvm/bin/gvm-tools/
 # shellcheck disable=SC1091
 source /opt/gvm/bin/gvm-tools/bin/activate
 cd gvm-tools
