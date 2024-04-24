@@ -29,6 +29,8 @@ resource "random_password" "gvm_pw" {
 }
 
 resource "aws_instance" "ec2_public" {
+  # checkov:skip=CKV2_AWS_41:no IAM role required
+  # checkov:skip=CKV_AWS_88:public IP address intended
   ami                         = data.aws_ami.gvm_host.id
   associate_public_ip_address = true
   instance_type               = "i4i.xlarge"
@@ -49,6 +51,7 @@ resource "aws_instance" "ec2_public" {
 
   root_block_device {
     volume_size = "50"
+    encrypted   = true
   }
 
   provisioner "file" {

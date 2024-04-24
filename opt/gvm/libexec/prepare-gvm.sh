@@ -22,7 +22,7 @@ tar xf /opt/gvm/initial_data/feeds.tar.gz -C /
 
 # Reload NVTs
 if ! grep -q NO /opt/gvm/initial_data/initial_feed_sync; then
-    su - gvm -c "greenbone-nvt-sync >$LOG_FILE"
+    su - gvm -c "greenbone-feed-sync >$LOG_FILE"
 fi
 sudo openvas -u
 
@@ -79,7 +79,7 @@ ln -s /var /usr/
 # Enable feed validation
 curl -f -L https://www.greenbone.net/GBCommunitySigningKey.asc -o /tmp/GBCommunitySigningKey.asc
 FPR="$(gpg --with-colons --import-options show-only --import /tmp/GBCommunitySigningKey.asc | awk -F: '/^fpr:/ { print $10 }')"
-echo "$FPR:6:" > /tmp/ownertrust.txt
+echo "$FPR:6:" >/tmp/ownertrust.txt
 su - gvm -c "gpg --import /tmp/GBCommunitySigningKey.asc"
 su - gvm -c "gpg --import-ownertrust < /tmp/ownertrust.txt"
 rm -f /tmp/ownertrust.txt /tmp/GBCommunitySigningKey.asc

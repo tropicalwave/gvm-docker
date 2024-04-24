@@ -1,16 +1,19 @@
 # flake8: noqa: F821,E501
-# pylint: disable=undefined-variable
+# pylint:disable=undefined-variable,invalid-name
 # type: ignore
+
+"""(Re-)set all overrides"""
 
 import csv
 from datetime import datetime
 
 
 def get_tasks_and_ids():
+    """Return all tasks and their IDs"""
     ret = {}
-    tasks = gmp.get_tasks(filter_string="rows=-1")
-    for i, task in enumerate(tasks.xpath("task")):
-        ret[task.find("name").text] = task.xpath("@id")[0]
+    all_tasks = gmp.get_tasks(filter_string="rows=-1")
+    for _, t in enumerate(all_tasks.xpath("task")):
+        ret[t.find("name").text] = t.xpath("@id")[0]
 
     return ret
 
@@ -22,7 +25,7 @@ for override in overrides.xpath("override"):
     oid = override.xpath("@id")[0]
     gmp.delete_override(oid, ultimate=True)
 
-with open("/opt/gvm/etc/overrides.csv") as csvfile:
+with open("/opt/gvm/etc/overrides.csv", encoding="utf-8") as csvfile:
     reader = csv.DictReader(csvfile, delimiter=";")
     for row in reader:
         if row["NVT"].startswith("#"):
@@ -50,9 +53,9 @@ with open("/opt/gvm/etc/overrides.csv") as csvfile:
             hosts = ip.split(",")
 
         if task == "":
-            task_id = None
+            TASK_ID = None
         else:
-            task_id = tasks[task]
+            TASK_ID = tasks[task]
 
         gmp.create_override(
             reason,
@@ -60,6 +63,6 @@ with open("/opt/gvm/etc/overrides.csv") as csvfile:
             days_active=expire_days,
             hosts=hosts,
             port=port,
-            task_id=task_id,
+            task_id=TASK_ID,
             new_severity=-1,
         )
