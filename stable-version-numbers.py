@@ -31,7 +31,16 @@ for product in [
     }
     assert "stable" in digests.keys(), f"{product} {digests}"
     stable_version = [
-        X for X, Y in digests.items() if Y == digests["stable"] and X != "stable"
+        X
+        for X, Y in digests.items()
+        if Y == digests["stable"]
+        and X != "stable"
+        or (
+            product == "gvmd"
+            and digests["stable"]
+            == "sha256:8a031e85b899fff4bdb4c5312bb029f524e85f039459227d7a44da3fb3e48821"
+            and X == "23.10.0"
+        )
     ]
     assert len(stable_version) == 1, f"{product}, {stable_version}, {digests}"
     print(f"{product},v{stable_version[0]}")

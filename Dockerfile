@@ -28,6 +28,7 @@ RUN apt-get -y update -o APT::Update::Error-Mode=any && \
     heimdal-dev \
     less \
     libbsd-dev \
+    libcjson-dev \
     libcurl4-openssl-dev \
     libglib2.0-dev \
     libgnutls28-dev \
