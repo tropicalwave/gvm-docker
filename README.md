@@ -9,11 +9,11 @@ installation in a container.
 
 After it is set up, the system will
 
-* be accessible by browsing to <https://localhost:4443>,
-* be configured with a weekly running task targeting the container itself,
-* allow connection to additional scanner containers,
-* update GVM feeds daily between noon and 2 PM UTC, and
-* update the underlying Debian installation daily.
+- be accessible by browsing to <https://localhost:4443>,
+- be configured with a weekly running task targeting the container itself,
+- allow connection to additional scanner containers,
+- update GVM feeds daily between noon and 2 PM UTC, and
+- update the underlying Debian installation daily.
 
 The following diagram shows a rough overview of the components and
 interactions involved:
@@ -22,6 +22,7 @@ interactions involved:
 ## Quickstart
 
 The following commands will start a single main node:
+
 ```bash
 ./prepare.sh
 podman-compose -f docker-compose.yml -f docker-compose-gvm.yml up -d --build
@@ -29,8 +30,8 @@ podman-compose -f docker-compose.yml -f docker-compose-gvm.yml up -d --build
 
 After some time, you can browse to <https://localhost:4443> and login:
 
-* user: gvm
-* password: (see content of `.gvm_pass`)
+- user: gvm
+- password: (see content of `.gvm_pass`)
 
 Hint: The initialization phase takes some minutes (more than 15 minutes).
 You can check that it finished by checking that one task was created.
@@ -39,6 +40,7 @@ You can check that it finished by checking that one task was created.
 
 To connect an additional scanner to the main node, checkout the
 repository on another host and run the following commands:
+
 ```bash
 ./prepare.sh
 podman-compose -f docker-compose.yml -f docker-compose-ospd.yml up -d --build
@@ -49,6 +51,7 @@ podman-compose exec openvas systemctl status
 
 Thereafter, run the following commands on the host of the main node
 and follow the instructions:
+
 ```bash
 podman-compose exec openvas /bin/bash
 > /opt/gvm/sbin/add-scanner.sh <some name> <IP address of additional scanner> [SSH port]
@@ -71,6 +74,7 @@ runtime as follows:
 ## Update version numbers
 
 To set all (sub-)products in their latest stable version, please run the following command:
+
 ```bash
 ./stable-version-numbers.py > opt/gvm/src/versions.csv
 ```

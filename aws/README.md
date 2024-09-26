@@ -9,6 +9,7 @@ as it costs money.
 ## How-To
 
 Startup:
+
 ```bash
 ./prepare.sh
 terraform init
@@ -16,6 +17,7 @@ terraform apply
 ```
 
 Deletion:
+
 ```bash
 terraform destroy
 ```
