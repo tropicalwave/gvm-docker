@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 # pylint:disable=invalid-name,import-error
 """Retrieve and output latest stable product version numbers"""
-import json
-
 import requests
 
 for product in [

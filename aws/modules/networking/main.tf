@@ -33,6 +33,7 @@ module "vpc" {
 resource "aws_security_group" "allow_ssh_pub" {
   #ts:skip=AC_AWS_0319
   # checkov:skip=CKV2_AWS_5:false positive
+  # checkov:skip=CKV_AWS_382:allow all outgoing traffic for vulnerability scans
   name        = "${var.namespace}-allow_ssh"
   description = "Allow SSH inbound traffic"
   vpc_id      = module.vpc.vpc_id
