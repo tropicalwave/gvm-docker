@@ -14,8 +14,8 @@ while IFS=',' read -r product version; do
         continue
     elif echo "$product" | grep -q '^gsa$'; then
         cd "$product"
-        yarn add terser
-        yarn build
+        npm install
+        npm run build
         mkdir -p "$INSTALL_PREFIX/share/gvm/gsad/web/"
         cp -r build/* "$INSTALL_PREFIX/share/gvm/gsad/web/"
     else
@@ -39,14 +39,14 @@ while IFS=',' read -r product version; do
 done </opt/gvm/src/versions.csv
 
 # gvm-tools
-git clone -b v24.7.0 --depth 1 \
+git clone -b v25.3.0 --depth 1 \
     https://github.com/greenbone/gvm-tools.git
 virtualenv --python python3.11 /opt/gvm/bin/gvm-tools/
 # shellcheck disable=SC1091
 source /opt/gvm/bin/gvm-tools/bin/activate
 cd gvm-tools
 pip3 install .
-pip3 install tz icalendar
+pip3 install icalendar
 deactivate
 for i in gvm-cli gvm-pyshell gvm-script; do
     ln -s "/opt/gvm/bin/gvm-tools/bin/$i" /opt/gvm/bin/
@@ -66,7 +66,7 @@ cd /opt/gvm/src
 rm -rf ospd-scanner
 
 # greenbone-feed-sync installation
-git clone -b v24.3.0 --depth 1 \
+git clone -b v25.1.0 --depth 1 \
     https://github.com/greenbone/greenbone-feed-sync.git
 virtualenv --python python3.11 /opt/gvm/bin/greenbone-feed-sync-env/
 # shellcheck disable=SC1091

@@ -12,8 +12,8 @@ import sys
 import time
 from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
-import pytz
 from dateutil.rrule import WEEKLY, rrule
 from icalendar import Calendar, Event
 
@@ -74,13 +74,15 @@ def create_schedule(name, wday, hours):
     cal.add("prodid", "-//someid//")
     cal.add("version", "2.0")
 
-    now = datetime.now(tz=pytz.UTC)
+    now = datetime.now(tz=ZoneInfo("UTC"))
     next_wd = rrule(freq=WEEKLY, dtstart=now, byweekday=wday, count=1)[0]
     event = Event()
     event.add("dtstamp", now)
     event.add(
         "dtstart",
-        datetime(next_wd.year, next_wd.month, next_wd.day, hours, tzinfo=pytz.utc),
+        datetime(
+            next_wd.year, next_wd.month, next_wd.day, hours, tzinfo=ZoneInfo("UTC")
+        ),
     )
     event.add("rrule", {"freq": "weekly"})
     cal.add_component(event)

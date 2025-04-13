@@ -4,12 +4,12 @@
 FROM debian:12 AS base
 RUN apt-get -y update -o APT::Update::Error-Mode=any && \
     apt-get install -y --no-install-recommends curl gnupg ca-certificates && \
-    curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor > /usr/share/keyrings/yarnkey.gpg && \
-    curl -sL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor > /usr/share/keyrings/nodekey.gpg && \
-    echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian/ stable main" > \
-    /etc/apt/sources.list.d/yarn.list && \
-    echo "deb [signed-by=/usr/share/keyrings/nodekey.gpg] https://deb.nodesource.com/node_14.x bullseye main" > \
+    curl -sL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /usr/share/keyrings/nodesource.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" > \
     /etc/apt/sources.list.d/nodesource.list && \
+    echo "Package: nodejs" > /etc/apt/preferences.d/nodejs && \
+    echo "Pin: origin deb.nodesource.com" >> /etc/apt/preferences.d/nodejs && \
+    echo "Pin-Priority: 600" >> /etc/apt/preferences.d/nodejs && \
     apt-get -y update -o APT::Update::Error-Mode=any && \
     apt-get -y autoremove && \
     apt-get install -y --no-install-recommends \
@@ -25,7 +25,8 @@ RUN apt-get -y update -o APT::Update::Error-Mode=any && \
     git \
     gnutls-bin \
     graphviz \
-    heimdal-dev \
+    heimdal-multidev \
+    krb5-multidev \
     less \
     libbsd-dev \
     libcjson-dev \
@@ -51,7 +52,7 @@ RUN apt-get -y update -o APT::Update::Error-Mode=any && \
     mosquitto \
     openssh-server \
     nmap \
-    node.js \
+    nodejs \
     nsis \
     pkg-config \
     postgresql \
@@ -82,8 +83,7 @@ RUN apt-get -y update -o APT::Update::Error-Mode=any && \
     xml-twig-tools \
     xmlstarlet \
     xmltoman \
-    xsltproc \
-    yarn && \
+    xsltproc && \
     rm -rf /var/lib/apt/lists/*
 
 COPY etc/profile.d/* /etc/profile.d/
